@@ -44,7 +44,7 @@ if [ -f  /lib/ld-linux.so.2 ]; then
    cp --parents /lib/ld-linux.so.2 /$CHROOT
 fi
 
-echo "Chroot jail is ready. To access it execute: chroot $CHROOT"
+echo "Chroot jail ist fertig: chroot $CHROOT"
 #########################################################################
 chmod +x chroot.sh
 ./chroot.sh
