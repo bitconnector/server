@@ -1,0 +1,5 @@
+
+snapper -c neueruser create-config /data/home/neueruser/
+snapper -c neueruser set-config SYNC_ACL=yes
+snapper -c neueruser set-config ALLOW_USERS=neueruser
+snapper -c neueruser set-config ALLOW_GROUPS=neueruser
