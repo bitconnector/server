@@ -1,0 +1,37 @@
+mkdir .ssh
+nano .ssh/authorized_keys
+sudo gpasswd -a user ssh
+gpasswd -a user ssh-tunnel
+groupadd ssh-tunnel   #für das erlauben von port forwarding
+groupadd sftp         #für chroot in geschützte Umgebung
+groupadd ssh-pw		    #für die Anmeldung ohne Password
+sudo nano /etc/ssh/sshd_config
+#########################################################################
+Port 22
+Protocol 2
+UsePrivilegeSeparation yes
+KeyRegenerationInterval 3600
+ServerKeyBits 2048
+SyslogFacility AUTH
+LogLevel INFO
+LoginGraceTime 120
+PermitRootLogin no
+StrictModes yes
+PubkeyAuthentication yes
+PermitEmptyPasswords no #login with accounts without pw is impossible
+#MaxSessions 10
+ChallengeResponseAuthentication no
+PasswordAuthentication no
+AllowTcpForwarding no
+UsePAM no
+Subsystem sftp internal-sftp -u 002
+AllowGroups ssh sftp
+Match Group ssh-pw
+	      PasswordAuthentication yes
+Match Group sftp
+	      ChrootDirectory /data
+Match Group ssh-tunnel
+        AllowTcpForwarding yes
+Match all
+#########################################################################
+sudo reboot now #oder /etc/init.d/ssh restart
