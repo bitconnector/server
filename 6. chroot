@@ -1,0 +1,51 @@
+apt install rssh rsync
+
+#Chroot einrichten
+nano chroot.sh
+#########################################################################
+#!/bin/bash
+
+CHROOT='/data'
+if [ ! -d "$CHTOOT"];then
+  mkdir $CHROOT
+fi
+
+PROGRAMMS=(/usr/bin/{rssh,rsync,scp} /usr/lib/rssh/rssh_chroot_helper)
+
+#Entferne altes
+rm -rf $CHROOT/bin
+rm -rf $CHROOT/usr
+rm -rf $CHROOT/lib
+rm -rf $CHROOT/etc
+rm -rf $CHROOT/lib64
+
+#Programme kopieren
+for i in $( ldd ${PROGRAMMS[*]} | grep -v dynamic | cut -d " " -f 3 | sed 's/://' | sort | uniq )
+  do
+    echo $i
+    cp --parents $i $CHROOT
+  done
+
+#config erstellen
+mkdir $CHROOT/etc
+echo "allowscp
+allowsftp
+allowrsync" > $CHROOT/etc/rssh.conf
+
+# ARCH amd64
+if [ -f /lib64/ld-linux-x86-64.so.2 ]; then
+    echo /lib64/ld-linux-x86-64.so.2
+    cp --parents /lib64/ld-linux-x86-64.so.2 /$CHROOT
+fi
+
+# ARCH i386
+if [ -f  /lib/ld-linux.so.2 ]; then
+   echo /lib/ld-linux.so.2
+   cp --parents /lib/ld-linux.so.2 /$CHROOT
+fi
+
+echo "Chroot jail is ready. To access it execute: chroot $CHROOT"
+#########################################################################
+chmod +x chroot.sh
+./chroot.sh
+chroot /data/ /usr/bin/rssh	#testen der Umgebung
