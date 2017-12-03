@@ -1,0 +1,30 @@
+mkdir /data/home -p
+#Subvolumes für Freigeben einrichten
+btrfs sub create /btrfs/@neueruser
+mkdir /data/home/neueruser
+
+btrfs sub create /btrfs/@Medien
+mkdir /data/home/Medien
+btrfs sub create /btrfs/@Datentransfer
+mkdir /data/home/Datentransfer
+
+nano /etc/fstab		#UUID, Mountpoint und Subvolume-Name anpassen pro eintrag
+#########################################################################
+UUID=be6cc282-2259-4a37-99a6-c5e187a51a0a /data/neueruser btrfs rw,noatime,compress=lzo,subvol=@neueruser 0 0
+UUID=be6cc282-2259-4a37-99a6-c5e187a51a0a /data/Medien btrfs rw,noatime,compress=lzo,subvol=@Medien 0 0
+UUID=be6cc282-2259-4a37-99a6-c5e187a51a0a /data/Datentransfer btrfs rw,noatime,compress=lzo,subvol=@Datentransfer 0 0
+#########################################################################
+mount -a
+df
+
+groupadd medien
+groupadd medien-w
+groupadd datentransfer
+
+chown neueruser:neueruser /data/home/neueruser/ -R
+chmod 770 /data/home/neueruser/ -R
+
+chown user:medien-w /data/home/Medien/ -R
+chmod 775 /data/home/Medien/ -R
+chown user:datentransfer /data/home/Datentransfer/ -R
+chmod 777 /data/home/Datentransfer/ -R
