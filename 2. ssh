@@ -36,7 +36,7 @@ Match all
 #########################################################################
 sudo reboot now #oder /etc/init.d/ssh restart
 
-#gesicherten ssh Zugang für neuenuser anlegen
+#gesicherten ssh Zugang für neuenuser anlegen (benötigt schritt 6 chroot)
 adduser --shell /usr/bin/rssh neuenuser
 gpasswd -a neuenuser sftp
 gpasswd -a neuenuser ssh-pw	#erlaube login per password
