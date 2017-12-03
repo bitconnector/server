@@ -1,0 +1,6 @@
+#Bei Erstanmeldung als user
+su
+#als root:
+apt-get install sudo
+gpasswd -a kratzsch sudo
+reboot now
