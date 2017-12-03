@@ -35,3 +35,7 @@ Match Group ssh-tunnel
 Match all
 #########################################################################
 sudo reboot now #oder /etc/init.d/ssh restart
+
+#gesicherten ssh Zugang für neuenuser anlegen
+gpasswd -a neuenuser sftp
+gpasswd -a neuenuser ssh-pw	#erlaube login per password
