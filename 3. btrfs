@@ -1,0 +1,13 @@
+apt install btrfs-tools snapper
+#BTRFS Datenverzeichnis einrichten:
+lsblk			          #um die richtigen Laufwerke auszusuchen
+mkfs.btrfs -d raid1 -m raid1 /dev/sdb /dev/sdc -L btrfs
+mkdir /btrfs
+btrfs filesystem show	#zeigt die UUID des Volumens an(wichtig für den nächten Schritt)
+nano /etc/fstab		  #UUID anpassen
+#########################################################################
+#BTRFS root
+UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /btrfs btrfs rw,noatime,compress=lzo 0 0
+#########################################################################
+mount -a		        #Volumen nach fstab mounten
+df			            #überprüfen, ob alles passt
