@@ -2,5 +2,5 @@
 su
 #als root:
 apt-get install sudo
-gpasswd -a kratzsch sudo
+gpasswd -a user sudo
 reboot now
