@@ -1,12 +1,12 @@
+groupadd ssh-tunnel   		#für das erlauben von port forwarding
+groupadd sftp         		#für normale Nutzer mit einer speziell gesicherten Umgebung
+groupadd ssh-pw		    	#für die Anmeldung ohne Password(sonst ist die Anmeldung nur mit einem ssh-Schlüssel möglich)
 mkdir .ssh
-nano .ssh/authorized_keys
-sudo gpasswd -a user ssh
-gpasswd -a user ssh-tunnel
-groupadd ssh-tunnel   #für das erlauben von port forwarding
-groupadd sftp         #für chroot in geschützte Umgebung
-groupadd ssh-pw		    #für die Anmeldung ohne Password
+nano .ssh/authorized_keys	#öffentlichen ssh-Schlüssel eintragen
+sudo gpasswd -a ADMIN ssh	#ssh für den ADMIN erlauben
+gpasswd -a user ssh-tunnel	#erlaubt dem ADMIN das Tunneln einer Verbindung
 sudo nano /etc/ssh/sshd_config
-#########################################################################
+#folgendes in die Datei eintragen:#######################################
 Port 22
 Protocol 2
 UsePrivilegeSeparation yes
@@ -18,7 +18,7 @@ LoginGraceTime 120
 PermitRootLogin no
 StrictModes yes
 PubkeyAuthentication yes
-PermitEmptyPasswords no #login with accounts without pw is impossible
+PermitEmptyPasswords no 	#login with accounts without pw is impossible
 #MaxSessions 10
 ChallengeResponseAuthentication no
 PasswordAuthentication no
@@ -27,16 +27,17 @@ UsePAM no
 Subsystem sftp internal-sftp -u 002
 AllowGroups ssh sftp
 Match Group ssh-pw
-	      PasswordAuthentication yes
+	PasswordAuthentication yes
 Match Group sftp
-	      ChrootDirectory /data
+	ChrootDirectory /data
 Match Group ssh-tunnel
-        AllowTcpForwarding yes
+	AllowTcpForwarding yes
 Match all
-#########################################################################
+#Datei speichern und Editor beenden######################################
+
 sudo reboot now #oder /etc/init.d/ssh restart
 
-#gesicherten ssh Zugang für neuenuser anlegen (benötigt schritt 6 chroot)
-adduser --shell /usr/bin/rssh neuenuser
-gpasswd -a neuenuser sftp
-gpasswd -a neuenuser ssh-pw	#erlaube login per password
+#gesicherten ssh Zugang für NUTZER anlegen (benötigt schritt 6 chroot)
+adduser --shell /usr/bin/rssh NUTZER
+gpasswd -a NUTZER sftp		#erlaube den Zugriff auf eine gesicherte Umgebung
+gpasswd -a NUTZER ssh-pw	#erlaube login per password
