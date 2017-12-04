@@ -15,7 +15,7 @@ nano /etc/samba/smb.conf
 
 	encrypt passwords = yes
 
-	#Alle Rechte von denen des Verzeichnisses darueber nehmen	
+	#Alle Rechte des Verzeichnisses darüber übernehmen	
 	inherit acls = yes
 	inherit owner = yes
 	inherit permissions = yes
@@ -48,4 +48,4 @@ testparm
 /etc/init.d/samba restart
 
 
-smbpasswd -a neueruser
+smbpasswd -a NUTZER
