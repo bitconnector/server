@@ -32,13 +32,13 @@ echo "allowscp
 allowsftp
 allowrsync" > $CHROOT/etc/rssh.conf
 
-# ARCH amd64
+# amd64
 if [ -f /lib64/ld-linux-x86-64.so.2 ]; then
     echo /lib64/ld-linux-x86-64.so.2
     cp --parents /lib64/ld-linux-x86-64.so.2 /$CHROOT
 fi
 
-# ARCH i386
+# i386
 if [ -f  /lib/ld-linux.so.2 ]; then
    echo /lib/ld-linux.so.2
    cp --parents /lib/ld-linux.so.2 /$CHROOT
