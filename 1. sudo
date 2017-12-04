@@ -1,6 +1,6 @@
-#Bei Erstanmeldung als user
+#Bei Erstanmeldung als ADMIN
 su
 #als root:
 apt-get install sudo
-gpasswd -a user sudo
+gpasswd -a ADMIN sudo
 reboot now
