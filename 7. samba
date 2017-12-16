@@ -26,7 +26,7 @@ nano /etc/samba/smb.conf
 	public = no
 	writeable = no
 	valid users = @medien @medien-w
-	write list = @medien-write
+	write list = @medien-w
 	browseable = yes
 
 [Datentransfer]
