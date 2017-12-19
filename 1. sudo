@@ -1,4 +1,4 @@
-#Bei Erstanmeldung als ADMIN
+#Bei der Erstanmeldung als ADMIN des Servers
 su
 #als root:
 apt-get install sudo
