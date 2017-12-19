@@ -1,13 +1,13 @@
-groupadd ssh-tunnel   		#für das erlauben von port forwarding
-groupadd sftp         		#für normale Nutzer mit einer speziell gesicherten Umgebung
+groupadd ssh-tunnel   		#Erlaubt den Nutzern dieser Gruppe das Port-forwarding per ssh(Nutzung des Servers als Proxy)
+groupadd sftp         		#Gruppe für normale Nutzer, die  den Zugriff nur auf eine speziell gesicherte Umgebung zulässt
 groupadd ssh-pw		    	#für die Anmeldung ohne Password(sonst ist die Anmeldung nur mit einem ssh-Schlüssel möglich)
 mkdir .ssh
-nano .ssh/authorized_keys	#öffentlichen ssh-Schlüssel eintragen
-sudo gpasswd -a ADMIN ssh	#ssh für den ADMIN erlauben
-gpasswd -a user ssh-tunnel	#erlaubt dem ADMIN das Tunneln einer Verbindung
+nano .ssh/authorized_keys	#öffentlichen ssh-Schlüssel des ADMINs eintragen
+sudo gpasswd -a ADMIN ssh	#normalen ssh Zugang dem ADMIN erlauben(ACHTUNG nur für den ADMIN)
+gpasswd -a user ssh-tunnel	#erlaubt dem ADMIN das Tunneln einer Verbindung durch den Server
 sudo nano /etc/ssh/sshd_config
 #folgendes in die Datei eintragen:#######################################
-Port 22
+Port 22 #möglichkeit zur Änderung des Standart Ports
 Protocol 2
 UsePrivilegeSeparation yes
 KeyRegenerationInterval 3600
@@ -18,19 +18,19 @@ LoginGraceTime 120
 PermitRootLogin no
 StrictModes yes
 PubkeyAuthentication yes
-PermitEmptyPasswords no 	#login with accounts without pw is impossible
+PermitEmptyPasswords no 	#erlaubt kein Login ohne Passwort, wenn ein Nutzer keines hat
 #MaxSessions 10
 ChallengeResponseAuthentication no
 PasswordAuthentication no
 AllowTcpForwarding no
 UsePAM no
 Subsystem sftp internal-sftp -u 002
-AllowGroups ssh sftp
-Match Group ssh-pw
+AllowGroups ssh sftp #nur Nutzer, die in der Gruppe ssh(nur ADMIN) und sftp(alle normalen Nutzer ohne Rechte) sind erlaubt
+Match Group ssh-pw #errlaubt nur Nutzern mit der Gruppe ssh-pw das Login per Passwort. alle ohne diese Gruppe brauchen ein Keyfile unter /home/NUTZER/.ssh/authorized_keys
 	PasswordAuthentication yes
-Match Group sftp
+Match Group sftp #Sperrt die normalen sftp Nutzer in das Daten Verzeichnis ein
 	ChrootDirectory /data
-Match Group ssh-tunnel
+Match Group ssh-tunnel #erlaubt den Nutzern in der Gruppe ssh-tunnel das Nutzen des Servers als einen Proxy
 	AllowTcpForwarding yes
 Match all
 #Datei speichern und Editor beenden######################################
