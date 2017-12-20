@@ -10,4 +10,4 @@ nano /etc/fstab		  #UUID anpassen
 UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /btrfs btrfs rw,noatime,compress=lzo 0 0
 #########################################################################
 mount -a		        #Volumen nach fstab mounten
-df			            #überprüfen, ob alles passt
+df -h			            #überprüfen, ob alles passt
