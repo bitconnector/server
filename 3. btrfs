@@ -1,10 +1,11 @@
 apt install btrfs-tools snapper
 #BTRFS Datenverzeichnis einrichten:
-lsblk			          #um die richtigen Laufwerke auszusuchen
+lsblk			          #um die richtigen Laufwerke/Partitionen auszusuchen ersetze diese dann im unteren Befehl
 mkfs.btrfs -d raid1 -m raid1 /dev/sdb /dev/sdc -L btrfs
+#Falls es nur eine Partition/Festplatte gibt, entferne die Parameter "-d raid1 -m raid1" aus dem Befehl. Der Nachteil ohne Raid1 ist, dass wenn die Festplatte kaputt geht sind auch die Daten verloren. Dafür ist dann aber auch mehr als nur die Hälfte an Platz benutzbar.
 mkdir /btrfs
 btrfs filesystem show	#zeigt die UUID des Volumens an(wichtig für den nächten Schritt)
-nano /etc/fstab		  #UUID anpassen
+nano /etc/fstab		  #die UUID (xxx) muss angepasst werden
 #########################################################################
 #BTRFS root
 UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx /btrfs btrfs rw,noatime,compress=lzo 0 0
