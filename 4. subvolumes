@@ -28,3 +28,5 @@ chown user:medien-w /data/home/Medien/ -R
 chmod 775 /data/home/Medien/ -R
 chown user:datentransfer /data/home/Datentransfer/ -R
 chmod 777 /data/home/Datentransfer/ -R
+
+#setfacl für bessere Rechteverwaltung per Sftp
