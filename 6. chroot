@@ -49,3 +49,6 @@ echo "Chroot jail ist fertig: chroot $CHROOT"
 chmod +x chroot.sh
 ./chroot.sh
 chroot /data/ /usr/bin/rssh	#testen der Umgebung
+
+#diff <(sort file1) <(sort file2) zum überprüfen nach Aktualisierungen
+#fuser -k filename zum abmelden der Benutzer für aktualisierungen
